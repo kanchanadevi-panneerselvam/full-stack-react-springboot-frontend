@@ -1,37 +1,45 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import AuthenticatedRoute from "./AuthenticatedRoute.jsx";
+import HeaderComponent from "./HeaderComponent.jsx";
+import LoginComponent from "./LoginComponent.jsx";
+import LogoutComponent from "./LogoutComponent.jsx";
+import WelcomeComponent from "./WelcomeComponent.jsx";
+import ListOfTodosComponent from "./ListOfTodosComponent.jsx";
+import FooterComponent from "./FooterComponent.jsx";
+import ErrorComponent from "./ErrorComponent.jsx";
+import TodoComponent from "./TodoComponent.jsx";
+
 class TodoApp extends Component {
   render() {
     return (
       <div className="TodoApp">
-        <LoginComponent />
+        <Router>
+          <>
+            <HeaderComponent />
+            <Switch>
+              <Route path="/" exact component={LoginComponent} />
+              <Route path="/login" component={LoginComponent} />
+              <AuthenticatedRoute
+                path="/welcome/:name"
+                component={WelcomeComponent}
+              />
+              <AuthenticatedRoute path="/todos/:id" component={TodoComponent} />
+              <AuthenticatedRoute
+                path="/todos"
+                component={ListOfTodosComponent}
+              />
+              <AuthenticatedRoute path="/logout" component={LogoutComponent} />
+
+              <Route component={ErrorComponent} />
+            </Switch>
+            <FooterComponent />
+          </>
+        </Router>
+        {/* <LoginComponent />
+        <Welcome /> */}
       </div>
     );
-  }
-}
-
-class LoginComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-  }
-  render() {
-    return (
-      <div className="LoginComponent">
-        User Name:{" "}
-        <input
-          type="text"
-          name="username"
-          value="halsy"
-          onChange={this.handleUsernameChange}
-        />
-        Password: <input type="password" name="password" />
-        <button>Login</button>
-      </div>
-    );
-  }
-
-  handleUsernameChange(event) {
-    console.log(event.target.value);
   }
 }
 
